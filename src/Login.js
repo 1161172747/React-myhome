@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Icon, Form, Divider } from 'semantic-ui-react'
 import './Login.css'
 import axios from "axios"
+import {withRouter} from 'react-router-dom'
 
 class Login extends Component {
   constructor(props) {
@@ -22,11 +23,14 @@ class Login extends Component {
     })
   }
   submit = async (event) => {
-    let data = await axios.post('http://47.96.21.88:8086/users/login',{
+    let ret = await axios.post('http://47.96.21.88:8086/users/login',{
       uname:this.state.username,
       pwd:this.state.password
     })
-    console.log(data)
+    console.log(ret)
+    sessionStorage.setItem('mytoken',ret.data.data.token);
+    let {history} = this.props;
+    history.push('/home')
   }
   render() {
     return (
@@ -69,4 +73,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default withRouter(Login)
